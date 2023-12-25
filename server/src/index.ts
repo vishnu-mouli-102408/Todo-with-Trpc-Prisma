@@ -7,19 +7,24 @@ import {
   CreateHTTPContextOptions,
 } from "@trpc/server/adapters/standalone";
 import { userRouter } from "./routers/user";
-// import { todoRouter } from "./routers/todo";
-import jwt from "jsonwebtoken";
+import { todoRouter } from "./routers/todo";
+import jwt, { JwtPayload } from "jsonwebtoken";
 const appRouter = router({
   user: userRouter,
-  //   todo: todoRouter,
+  todo: todoRouter,
 });
+
 // Export type router type signature,
 // NOT the router itself.
 export type AppRouter = typeof appRouter;
 
-const jwtVerify = (token: string, secret: string) => {
-  const response = jwt.verify(token, secret);
-  console.log({ response });
+interface JwtResponse extends JwtPayload {
+  userId: number;
+}
+
+const jwtVerify = (token: string, secret: string): JwtResponse => {
+  const response = jwt.verify(token, secret) as JwtResponse;
+  //   console.log({ response });
   return response;
 };
 
@@ -28,12 +33,15 @@ export const createContext = (opts: CreateHTTPContextOptions) => {
   let authHeader = opts.req.headers["authorization"];
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    console.log({ token });
-    const response = jwtVerify(token, SECRET);
-    if (response) {
+    // console.log({ token });
+    const { userId } = jwtVerify(token, SECRET);
+    // console.log("RESPONSE", userId);
+    // console.log("PRINTED");
+
+    if (userId) {
       return {
         prisma,
-        response,
+        userId,
       };
     }
   }
@@ -45,6 +53,7 @@ export const createContext = (opts: CreateHTTPContextOptions) => {
 
 const server = createHTTPServer({
   router: appRouter,
+  middleware: cors(),
   createContext,
 });
 

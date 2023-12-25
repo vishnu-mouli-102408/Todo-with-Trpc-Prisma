@@ -3,6 +3,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { SECRET } from "..";
 import { TRPCError } from "@trpc/server";
+import { isLoggedIn } from "../middlewares/user";
 
 export const userRouter = router({
   signup: publicProcedure
@@ -21,6 +22,7 @@ export const userRouter = router({
           password,
         },
       });
+
       let userId = response.id;
       const token: string = jwt.sign({ userId: userId }, SECRET, {
         expiresIn: "1h",
@@ -42,6 +44,7 @@ export const userRouter = router({
           email: opts.input.email,
         },
       });
+
       if (!user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
@@ -52,14 +55,25 @@ export const userRouter = router({
         token,
       };
     }),
-  // me: publicProcedure
-  // .output(z.object({
-  //     email: z.string()
-  // })).query(async (opts)=>{
-  //     let response = await opts.ctx.prisma.user.findFirst({
-  //         where:{
-  //             id: parseInt(opts.ctx.response)
-  //         }
-  //     })
-  // })
+  me: publicProcedure
+    .output(
+      z.object({
+        email: z.string(),
+      })
+    )
+    .use(isLoggedIn)
+    .query(async (opts) => {
+      let response = await opts.ctx.prisma.user.findFirst({
+        where: {
+          id: opts.ctx.userId,
+        },
+      });
+      if (!response) {
+        // shouldn't happen
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+      return {
+        email: response.email || "",
+      };
+    }),
 });
