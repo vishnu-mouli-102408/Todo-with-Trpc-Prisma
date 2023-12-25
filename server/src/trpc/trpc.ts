@@ -1,5 +1,4 @@
 import { initTRPC } from "@trpc/server";
-import { PrismaClient } from "@prisma/client";
 import { createContext } from "..";
 
 /**

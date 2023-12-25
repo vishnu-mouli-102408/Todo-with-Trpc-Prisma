@@ -36,7 +36,7 @@ exports.userRouter = (0, trpc_1.router)({
         });
         let userId = response.id;
         const token = jsonwebtoken_1.default.sign({ userId: userId }, __1.SECRET, {
-            expiresIn: "1h",
+            expiresIn: "24h",
         });
         return {
             token,
@@ -57,7 +57,7 @@ exports.userRouter = (0, trpc_1.router)({
             throw new server_1.TRPCError({ code: "UNAUTHORIZED" });
         }
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, __1.SECRET, {
-            expiresIn: "1h",
+            expiresIn: "24h",
         });
         return {
             token,

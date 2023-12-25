@@ -25,7 +25,7 @@ export const userRouter = router({
 
       let userId = response.id;
       const token: string = jwt.sign({ userId: userId }, SECRET, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
       return {
         token,
@@ -49,7 +49,7 @@ export const userRouter = router({
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       const token: string = jwt.sign({ userId: user.id }, SECRET, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
       return {
         token,

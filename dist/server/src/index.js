@@ -26,10 +26,10 @@ const createContext = (opts) => {
     let authHeader = opts.req.headers["authorization"];
     if (authHeader) {
         const token = authHeader.split(" ")[1];
-        console.log({ token });
+        // console.log({ token });
         const { userId } = jwtVerify(token, exports.SECRET);
-        console.log("RESPONSE", userId);
-        console.log("PRINTED");
+        // console.log("RESPONSE", userId);
+        // console.log("PRINTED");
         if (userId) {
             return {
                 prisma,
