@@ -72,6 +72,7 @@ exports.todoRouter = (0, trpc_1.router)({
         let response = yield opts.ctx.prisma.todo.delete({
             where: {
                 id: opts.input.id,
+                authorId: opts.ctx.userId,
             },
         });
         return response;

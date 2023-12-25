@@ -14,6 +14,7 @@ const server_1 = require("@trpc/server");
 const trpc_1 = require("../trpc/trpc");
 exports.isLoggedIn = (0, trpc_1.middleware)((opts) => __awaiter(void 0, void 0, void 0, function* () {
     const { ctx } = opts;
+    console.log("CTX IN MIDDLEWARE", opts.ctx.userId);
     if (!ctx.userId) {
         throw new server_1.TRPCError({ code: "UNAUTHORIZED" });
     }

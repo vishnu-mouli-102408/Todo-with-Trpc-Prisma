@@ -34,10 +34,12 @@ exports.userRouter = (0, trpc_1.router)({
                 password,
             },
         });
+        console.log("PRISMA SIGNUP RES", response);
         let userId = response.id;
         const token = jsonwebtoken_1.default.sign({ userId: userId }, __1.SECRET, {
             expiresIn: "24h",
         });
+        console.log("UserTokenSignup", token);
         return {
             token,
         };

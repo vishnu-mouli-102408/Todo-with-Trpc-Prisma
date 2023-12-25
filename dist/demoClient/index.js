@@ -20,7 +20,7 @@ const trpc = (0, client_1.createTRPCProxyClient)({
             headers() {
                 return __awaiter(this, void 0, void 0, function* () {
                     return {
-                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcwMzUxMzc1OSwiZXhwIjoxNzAzNjAwMTU5fQ.ypNBLJSJpqRJq5sUJiUNfCoJZCLTP7m5hOm5hqBzWB0",
+                        Authorization: "Bearer Some Random Toekn",
                     };
                 });
             },

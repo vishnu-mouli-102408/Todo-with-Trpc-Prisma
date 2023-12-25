@@ -34,6 +34,11 @@ export const createContext = (opts: CreateHTTPContextOptions) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     // console.log({ token });
+    if (token === "null") {
+      return {
+        prisma,
+      };
+    }
     const { userId } = jwtVerify(token, SECRET);
     // console.log("RESPONSE", userId);
     // console.log("PRINTED");

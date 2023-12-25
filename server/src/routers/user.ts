@@ -22,11 +22,14 @@ export const userRouter = router({
           password,
         },
       });
+      // console.log("PRISMA SIGNUP RES", response);
 
       let userId = response.id;
       const token: string = jwt.sign({ userId: userId }, SECRET, {
         expiresIn: "24h",
       });
+      // console.log("UserTokenSignup", token);
+
       return {
         token,
       };
